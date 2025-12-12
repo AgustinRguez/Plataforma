@@ -1,0 +1,39 @@
+services:
+  api: # nombres que le asignamos a los contenedores
+    build: . # con esto se le dice construi la imagen de esta misma ruta
+    container_name: plataforma_api_prd
+    command: uvicorn src.main:app --host 0.0.0.0 --port 3000
+    volumes:
+      - .:/app #red interna
+    ports:
+      - "3001:3000" # primer puerto del anfitrion, segundo puerto del contendor
+    environment:
+      - ENVIRONMENT=main
+    depends_on:
+      - db
+      - jaeger
+
+  db:
+    image: postgres:15-alpine
+    container_name: plataforma_prd
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=plataforma_prd
+    ports:
+      - "5434:5432"
+    volumes: # indica al contenedor que volumes va a utilizar
+      - postgres_data:/var/lib/postgresql/data
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: plataforma_jaeger_prd
+    ports:
+      - "16687:16686" # UI de Jaeger (entrás por navegador)
+      - "6832:6831/udp" # Puerto para enviar trazas
+    environment:
+      - COLLECTOR_ZIPKIN_HOST_PORT=:9411
+
+volumes: #se usa para la persistencia de datos, para no perder datos en caso de borrar imagenes
+  postgres_data:
