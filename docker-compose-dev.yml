@@ -4,7 +4,7 @@ services:
       context: . # para dev, indicarle al dev donde se encuentra la app donde va a trabajar
       dockerfile: Dockerfile  # Le indica que cree la api pero desde dockerfile dev
     container_name: plataforma_api_dev
-    command: uvicorn src.main:app --host 0.0.0.0 --port 3000 --reload
+    command: uvicorn main:app --host 0.0.0.0 --port 3000 --reload
     volumes:
       - .:/app #red interna
     ports:

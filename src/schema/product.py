@@ -15,5 +15,5 @@ class ProductResponse(BaseModel):
         #Permite que pydantic lea datos directamente desde un modelo ORM
         from_atributtes = True
         
-class ProducCreate(ProductBase):
+class ProductCreate(ProductBase):
     pass

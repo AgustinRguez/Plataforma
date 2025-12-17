@@ -2,7 +2,7 @@ services:
   api: # nombres que le asignamos a los contenedores
     build: . # con esto se le dice construi la imagen de esta misma ruta
     container_name: plataforma_api_prd
-    command: uvicorn src.main:app --host 0.0.0.0 --port 3000
+    command: uvicorn main:app --host 0.0.0.0 --port 3000
     volumes:
       - .:/app #red interna
     ports:
