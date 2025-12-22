@@ -13,4 +13,4 @@ class Product(Base):
 
     #Relacion con el usuario
     user_id = Column(Integer, ForeignKey("users.id")) # de la tabla del usuario
-    owner = relationship("User", back_populates="products")
+    owner = relationship("User", back_populates="product")

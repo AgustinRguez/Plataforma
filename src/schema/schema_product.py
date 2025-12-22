@@ -6,7 +6,8 @@ class ProductBase(BaseModel):
     price: float = Field(gt=0.0)
     stock: int = Field(ge=0)
     category: str
-
+    user_id: int
+    
 class ProductResponse(BaseModel):
     id: int
     user_id: int
