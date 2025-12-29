@@ -19,3 +19,5 @@ alembic
 asyncpg
 sqlalchemy
 gunicorn
+bcrypt
+python-jose
