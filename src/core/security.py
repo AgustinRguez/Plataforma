@@ -1,7 +1,7 @@
 import bcrypt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer  
-from jwt import decode_token
+from src.core.jwt import decode_token
 
 oauth_scheme = OAuth2PasswordBearer(tokenUrl="v1/auth/login")
 
