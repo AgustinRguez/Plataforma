@@ -7,6 +7,8 @@ from src.crud.crud_user import register_user, get_user_by_id, get_user_by_email
 from src.db.session import get_session
 from src.core.security import verify_password
 from src.core.jwt import create_access_token
+from src.api.v1.deps.deps import get_current_user
+
 
 router_user = APIRouter()
 
@@ -34,3 +36,7 @@ async def get_user_by_id_endpoint(data: UserLogin, db: AsyncSession = Depends(ge
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Error en la contraseña o email")
     access_token = create_access_token(data={"sub": str(user.id), "role": user.role})
     return {"access_token": access_token, "token_type": "bearer"}
+
+@router_user.get("/users/read", response_model=UserResponse, status_code=200)
+async def read_user(current_user = Depends(get_current_user)):
+    return current_user

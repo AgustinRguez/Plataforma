@@ -1,10 +1,13 @@
+from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.schema.schema_product import ProductCreate, ProductUpdate
 from src.db.product import Product
 
-async def register_product(db: AsyncSession, product_data: ProductCreate):
-    add_product = Product(**product_data.model_dump())
+async def register_product(db: AsyncSession, product_data: ProductCreate, user: int):
+    product_dict = product_data.model_dump()
+    product_dict["user_id"] = user
+    add_product = Product(**product_dict)
      # dictionary unpacking, le pasa cada par clave-valor al modelo de SQLAlchemy 
     db.add(add_product)
     await db.commit()
