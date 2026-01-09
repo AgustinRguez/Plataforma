@@ -11,6 +11,7 @@ from alembic import context
 from src.db.base import Base 
 from src.db.user import User
 from src.db.product import Product
+from src.db.order import Order 
 from src.core import settings # Para leer la URL de la DB
 
 config = context.config

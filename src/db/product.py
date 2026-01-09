@@ -1,5 +1,5 @@
 from sqlalchemy.orm import DeclarativeBase, relationship
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Boolean
 from src.db.base import Base
 
 class Product(Base):
@@ -10,7 +10,9 @@ class Product(Base):
     price = Column(Float, nullable=False)
     stock = Column(Integer)
     category = Column(String)
+    is_active = Column(Boolean, default=True)
 
     #Relacion con el usuario
     user_id = Column(Integer, ForeignKey("users.id")) # de la tabla del usuario
     owner = relationship("User", back_populates="product")
+    orders = relationship("Order", back_populates="product")

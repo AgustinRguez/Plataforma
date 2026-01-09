@@ -19,8 +19,8 @@ async def get_products(db: AsyncSession):
     result = await db.execute(query)
     return result.scalars().all() #devuelve el primer elemento de cada fila
 
-async def update_product(db: AsyncSession, product_id: int, product_data: ProductUpdate):
-    query = select(Product).where(Product.id == product_id)
+async def update_product(db: AsyncSession, product_id: int, product_data: ProductUpdate, user_id: int):
+    query = select(Product).where(Product.id == product_id, Product.user_id == user_id)
     result = await db.execute(query)
     db_product = result.scalars().first()
     if not db_product:
@@ -31,3 +31,8 @@ async def update_product(db: AsyncSession, product_id: int, product_data: Produc
     await db.commit()
     await db.refresh(db_product)
     return db_product
+
+async def get_product_by_user(db: AsyncSession, user_id: int):
+    query = select(Product).where(Product.user_id == user_id)
+    result = await db.execute(query)
+    return result.scalars().all()

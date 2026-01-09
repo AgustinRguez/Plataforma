@@ -14,4 +14,6 @@ async def get_current_user(token: str = Depends(oauth_scheme), db = Depends(get_
     user_obtain = await get_user_by_id(db=db, user_id=int(user_id))
     if user_obtain is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    if not user_obtain.is_active:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="El usuario no esta activo")
     return user_obtain
