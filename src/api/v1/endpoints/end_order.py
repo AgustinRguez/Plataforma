@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.params import Depends
-from schema.schema_order import OrderCreate
-from schema.schema_product import ProductBase
+from src.schema.schema_order import OrderCreate
+from src.schema.schema_product import ProductBase
 from src.db.user import User
 from src.crud.crud_product import register_product, get_products, update_product, get_product_by_user
 from src.db.session import get_session
