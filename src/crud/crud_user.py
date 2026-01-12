@@ -34,5 +34,4 @@ async def update_state_user(db: AsyncSession, user_id: int):
     await db.commit()
     result = await db.execute(select(User).where(User.id == user_id))
     user_final = result.scalars().first()
-    print(f"DEBUG: El usuario {user_id} ahora tiene is_active = {user_final.is_active}")
     return user_final

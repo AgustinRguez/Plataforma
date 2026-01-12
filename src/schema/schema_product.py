@@ -29,3 +29,7 @@ class ProductUpdate(BaseModel):
     price: Optional[float] = None
     stock: Optional[int] = None
     category: Optional[str] = None
+
+class ProductOrder(BaseModel):
+    name: str = Field(max_length=100)
+    description: str
