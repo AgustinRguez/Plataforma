@@ -4,11 +4,11 @@ from fastapi.params import Depends
 from src.db.user import User
 from src.schema.schema_user import UserResponse, UserCreate, UserLogin
 from src.schema.token import Token
-from src.crud.crud_user import register_user, get_user_by_id, get_user_by_email, update_state_user
+from src.crud.crud_user import register_user, get_user_by_id, get_user_by_email, update_state_user, reactive_user
 from src.db.session import get_session
 from src.core.security import verify_password
 from src.core.jwt import create_access_token
-from src.api.v1.deps.deps import get_current_user
+from src.api.v1.deps.deps import get_current_user, get_current_admin
 
 
 router_user = APIRouter()
@@ -44,7 +44,12 @@ async def get_user_by_id_endpoint(data: UserLogin, db: AsyncSession = Depends(ge
 async def read_user(current_user = Depends(get_current_user)):
     return current_user
 
-@router_user.patch("/users/update_state", response_model=UserResponse, status_code=200)
-async def change_state(db: AsyncSession = Depends(get_session), user_id: User = Depends(get_current_user)):
-    update_user = await update_state_user(db=db, user_id=user_id.id)
+@router_user.patch("/users/update_state/{user_id}", response_model=UserResponse, status_code=200)
+async def change_state(user_id: int, db: AsyncSession = Depends(get_session), admin: User = Depends(get_current_admin)):
+    update_user = await update_state_user(db=db, user_id=user_id)
+    return update_user
+
+@router_user.patch("/users/reactivate_user/{user_id}", response_model=UserLogin, status_code=200)
+async def reactivate_user_end(user_id: int, db: AsyncSession = Depends(get_session), admin: User = Depends(get_current_admin)):
+    update_user = await reactive_user(db=db, user_id=user_id)
     return update_user

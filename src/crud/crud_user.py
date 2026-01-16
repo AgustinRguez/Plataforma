@@ -35,3 +35,11 @@ async def update_state_user(db: AsyncSession, user_id: int):
     result = await db.execute(select(User).where(User.id == user_id))
     user_final = result.scalars().first()
     return user_final
+
+async def reactive_user(db: AsyncSession, user_id:int):
+    user_update = update(User).where(User.id == user_id).values(is_active=True)
+    await db.execute(user_update)
+    await db.commit()
+    result = await db.execute(select(User).where(User.id == user_id))
+    user_final = result.scalars().first()
+    return user_final

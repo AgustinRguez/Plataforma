@@ -1,3 +1,5 @@
+from src.model.enum import UserEnum
+from src.db.user import User
 from src.core.jwt import decode_token
 from src.db.session import get_session
 from src.crud.crud_user import get_user_by_id
@@ -17,3 +19,9 @@ async def get_current_user(token: str = Depends(oauth_scheme), db = Depends(get_
     if not user_obtain.is_active:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="El usuario no esta activo")
     return user_obtain
+
+async def get_current_admin(user: User = Depends(get_current_user)):
+    current_user = user
+    if not current_user.role == UserEnum.ADMIN:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Solo los admin puede reactivar usuarios")
+    return current_user
